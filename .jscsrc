@@ -1,0 +1,12 @@
+{
+  "preset": "airbnb",
+  "requireCurlyBraces": null,
+  "safeContextKeyword": [
+    "me",
+    "that"
+  ],
+  "requireCamelCaseOrUpperCaseIdentifiers": {
+    "ignoreProperties": true,
+    "strict": false
+  }
+}

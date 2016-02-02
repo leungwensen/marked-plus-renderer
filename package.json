@@ -1,0 +1,42 @@
+{
+    "name": "marked-plus-renderer",
+    "title": "marked-plus-renderer",
+    "description": "marked with a few more features",
+    "homepage": "https://github.com/leungwensen/marked-plus-renderer",
+    "version": "0.0.20160202",
+    "main": "marked-plus-renderer.js",
+    "license": "MIT",
+    "author": {
+        "description": "team of leungwensen",
+        "url": "https://github.com/orgs/leungwensen/teams"
+    },
+    "bugs": {
+        "url": "https://github.com/leungwensen/marked-plus-renderer/issues"
+    },
+    "dependencies": {
+        "marked-plus": "^0.0.20160202"
+    },
+    "devDependencies": {
+        "gulp": "^3.9.0",
+        "gulp-util": "^3.0.7",
+        "require-dir": "^0.3.0",
+        "through2": "^2.0.0",
+        "zero-text": "^0.0.20160127"
+    },
+    "scripts": {
+    },
+    "engines": {
+        "node": ">=0.8.0"
+    },
+    "keywords": [
+        "markdown",
+        "markdown renderer",
+        "marked",
+        "marked-plus",
+        "marked-plus-renderer"
+    ],
+    "repository": {
+        "type": "https",
+        "url": "https://github.com/leungwensen/marked-plus-renderer.git"
+    }
+}
