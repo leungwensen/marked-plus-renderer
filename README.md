@@ -1,54 +1,41 @@
-# marked-plus
+# marked-plus-renderer
 
-marked with a few more features
-
-## why
-
-to add a few more features that are missing in marked.
+wrap marked-plus as a full-feature markdown renderer
 
 ## install
 
-`npm install marked-plus --save`
+`npm install marked-plus-renderer --save`
 
 ## usage
 
-almost the same as [marked#usage](https://github.com/chjj/marked#usage), but with an extra option: `extra: true|false`
-
-with the `extra: true` option, you enabled the following features:
-
-### gfm-like check-lists
+**for browsers only**
 
 ```
-- [ ] unchecked
-- [x] checked
+import markedPlusRenderer from 'marked-plus-renderer'; 
+
+markedPlusRenderer(container, markdownString, options);
 ```
 
-### footnote
+## features
 
-```
-Here is a footnote[^footnote].
+### all basic markdown features(headings, tables, etc.)
 
-  [^footnote]: Here is the *text* of the **footnote**.
-```
+### gfm-like check-list
 
 ### definition list
 
-```
-Term 1
-:   Definition 1
+### footnote
 
-Term 2
-:   This definition has a code block.
+### graph
 
-        code block
-```
+### sequence diagram
 
-### toc (TODO)
+### gantt diagram
 
-```
-[toc] [a](#a)
-```
+### flowchart
 
-see [marked-plus-renderer](https://github.com/leungwensen/marked-plus-renderer) for more details.
+### latex math typesetting
 
-if what you want is a full-feature markdown renderer, you can use [marked-plus-renderer](https://github.com/leungwensen/marked-plus-renderer) directly.
+### emoji
+
+### html/js/css injection
