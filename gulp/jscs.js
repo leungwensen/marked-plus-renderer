@@ -6,15 +6,15 @@ var jscs = require('gulp-jscs');
 var path = require('path');
 
 gulp.task('jscs', [
-  'template'
+    'template'
 ], function () {
     return gulp.src([
-            path.resolve(__dirname, '../theme/src/**/*js')
+            path.resolve(__dirname, '../src/**/*js')
         ])
         .pipe(jscs({
             fix: true
         }))
         .pipe(jscs.reporter())
         .pipe(jscs.reporter('fail'))
-        .pipe(gulp.dest(path.resolve(__dirname, '../theme/src/')));
+        .pipe(gulp.dest(path.resolve(__dirname, '../src/')));
 });

@@ -6,11 +6,10 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     entry: {
-        main: path.resolve(__dirname, './theme/src/main.js'),
-        'page-loading': path.resolve(__dirname, './theme/src/page-loading.js')
+        'marked-plus-renderer': path.resolve(__dirname, './src/marked-plus-renderer.js')
     },
     output: {
-        path: path.resolve(__dirname, './theme/dist'),
+        path: path.resolve(__dirname, './dist'),
         filename: '[name].js'
     },
     alias: {},
@@ -45,15 +44,5 @@ module.exports = {
     plugins: [
         new ExtractTextPlugin('[name].css')
     ],
-    devtool: 'source-map',
-    devServer: {
-        stats: {
-            cached: false,
-            exclude: [
-                /node_modules[\\\/]/
-            ],
-            colors: true
-        }
-    }
+    devtool: 'source-map'
 };
-
