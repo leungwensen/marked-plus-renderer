@@ -1,4 +1,6 @@
 <figure>
-    <img src="{%= href %}" alt="{%= text %}" title="{%= title %}"/>
-    <!--<figcaption>{%= text %}</figcaption>-->
+    <img src="{%= data.href %}" alt="{%= data.text %}" title="{%= data.title %}"/>
+    {% if (data.figcaption) { %}
+        <figcaption>{%= data.text %}</figcaption>
+    {% } %}
 </figure>

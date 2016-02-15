@@ -6,7 +6,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     entry: {
-        'marked-plus-renderer': path.resolve(__dirname, './src/marked-plus-renderer.js')
+        'index': path.resolve(__dirname, './src/index.js')
     },
     output: {
         path: path.resolve(__dirname, './dist'),

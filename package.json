@@ -14,7 +14,14 @@
         "url": "https://github.com/leungwensen/marked-plus-renderer/issues"
     },
     "dependencies": {
-        "marked-plus": "^0.0.20160202"
+        "emoji-map": "^0.0.20160202",
+        "katex": "^0.5.1",
+        "marked-plus": "^0.0.20160202",
+        "flowchart.js": "^1.6.2",
+        "zero-dom": "^0.0.20151202",
+        "zero-fmt": "^0.0.20151202",
+        "zero-lang": "^0.0.20151202",
+        "zero-text": "^0.0.20160127"
     },
     "devDependencies": {
         "babel-core": "^6.2.1",
@@ -35,8 +42,7 @@
         "through2": "^2.0.0",
         "url-loader": "^0.5.7",
         "webpack": "^1.12.11",
-        "webpack-dev-server": "^1.14.1",
-        "zero-text": "^0.0.20160127"
+        "webpack-dev-server": "^1.14.1"
     },
     "scripts": {
     },

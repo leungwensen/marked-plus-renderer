@@ -20,7 +20,7 @@ module.exports = function () {
 
         try {
             file.contents = new Buffer(
-                'module.exports = ' +
+                'export default ' +
                 template.compile(file.contents.toString('utf8')).toString() +
                 ';'
             );
