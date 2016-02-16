@@ -3,8 +3,8 @@
     "title": "marked-plus-renderer",
     "description": "marked with a few more features",
     "homepage": "https://github.com/leungwensen/marked-plus-renderer",
-    "version": "0.0.20160202",
-    "main": "dist/index.js",
+    "version": "0.0.20160216",
+    "main": "dist/renderer.js",
     "license": "MIT",
     "author": {
         "description": "team of leungwensen",
