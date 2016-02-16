@@ -1,11 +1,13 @@
 
+import win from 'zero-lang/global';
+
 import generateCompiler from './compile';
 import generateRenderer from './render';
 
 let compiler = generateCompiler();
-let renderer = generateRenderer();
+let renderer = generateRenderer(compiler);
 
-export default {
+let main = {
   setOptions(compileOptions, renderOptions) {
     if (compileOptions) {
       compiler = generateCompiler(compileOptions);
@@ -25,3 +27,6 @@ export default {
   },
 };
 
+win.mpr = win.markedPlusRenderer = main;
+
+export default main;

@@ -1,7 +1,6 @@
 import emojiMap from 'emoji-map';
-import katex from 'katex';
+import katex from 'katex-all';
 import marked from 'marked-plus';
-import mermaid from 'mermaid';
 import lang from 'zero-lang';
 import htmlUtils from 'zero-text/html';
 import sprintf from 'zero-fmt/sprintf';
@@ -18,21 +17,9 @@ import tmplTaskListItem from './template/task-list-item';
 let templateHelper = lang.extend({}, lang, htmlUtils);
 
 export default function (newOptions) {
-  let options = lang.extend({
-    figcaption: true,
-    breaks: false,
-    pedantic: false,
-    renderer: renderer,
-    sanitize: false,
-    smartLists: true,
-    smartypants: true,
-    tables: true,
-  }, newOptions);
-
   let Renderer = marked.Renderer;
   let RendererPrototype = Renderer.prototype;
   let renderer = new Renderer();
-  let mermaidError;
 
   marked.__scriptsToLoad = [];
   marked.__linksToLoad = [];
@@ -47,10 +34,6 @@ export default function (newOptions) {
       }
     });
   }
-
-  mermaid.parseError = function (err/*, hash*/) {
-    mermaidError = err;
-  };
 
   renderer.listitem = function (text) { // list item
     if (!/^\[[ x]\]\s/.test(text)) { // normal list item
@@ -79,69 +62,70 @@ export default function (newOptions) {
     return RendererPrototype.codespan.apply(this, arguments);
   };
 
-  renderer.code = function (code, lang, escaped, lineNumber) { // code block
+  renderer.code = function (code, language, escaped, lineNumber) { // code block
     code = lang.trim(code);
+    language = language || '';
 
-    if (lang === 'markdown' || lang === 'md') {
+    if (language === 'markdown' || language === 'md') {
       return RendererPrototype.code.apply(this, arguments);
     }
 
     // html injection
-    if (lang === 'html+') {
-      lang = 'html';
+    if (language === 'html+') {
+      language = 'html';
       return RendererPrototype.code.apply(this, arguments) + code;
     }
 
-    if (lang === 'html-') {
+    if (language === 'html-') {
       return code;
     }
 
-    if (lang === 'js+' || lang === 'javascript+') {
-      lang = 'javascript';
+    if (language === 'js+' || language === 'javascript+') {
+      language = 'javascript';
       marked.__jsCodeToLoad += ('\n' + code);
       return RendererPrototype.code.apply(this, arguments);
     }
 
-    if (lang === 'js-' || lang === 'javascript-') {
+    if (language === 'js-' || language === 'javascript-') {
       marked.__jsCodeToLoad += ('\n' + code);
       return '';
     }
 
-    if (lang === 'css+' || lang === 'style+') {
-      lang = 'css';
+    if (language === 'css+' || language === 'style+') {
+      language = 'css';
       marked.__cssCodeToLoad += ('\n' + code);
       return RendererPrototype.code.apply(this, arguments);
     }
 
-    if (lang === 'css-' || lang === 'style-') {
+    if (language === 'css-' || language === 'style-') {
       marked.__cssCodeToLoad += ('\n' + code);
       return '';
     }
 
     // load resources with link/source
-    if (lang === 'script+') {
-      lang = 'html';
+    if (language === 'script+') {
+      language = 'html';
       add2arr(marked.__scriptsToLoad, code.split(/\n/));
       return RendererPrototype.code.apply(this, arguments);
     }
 
-    if (lang === 'script-') {
+    if (language === 'script-') {
       add2arr(marked.__scriptsToLoad, code.split(/\n/));
       return '';
     }
 
-    if (lang === 'link+') {
-      lang = 'html';
+    if (language === 'link+') {
+      language = 'html';
       add2arr(marked.__linksToLoad, code.split(/\n/));
       return RendererPrototype.code.apply(this, arguments);
     }
 
-    if (lang === 'link-') {
+    if (language === 'link-') {
       add2arr(marked.__linksToLoad, code.split(/\n/));
       return '';
     }
 
-    if (lang === 'math' || lang === 'katex') {
+    if (language === 'tex-math' || language === 'katex' || language === 'math') { // will use mathjax instead later?
       let tex = '';
       lang.each(code.split(/\n\n/), function (line) {
         // next if we have two empty lines
@@ -165,27 +149,27 @@ export default function (newOptions) {
 
     // mermaid
     if (
-        lang === 'gantt' ||
-        lang === 'sequence-diagram' ||
-        lang.match(/^graph-(?:tb|bt|rl|lr|td);?$/)
+        language === 'gantt' ||
+        language === 'sequence' ||
+        language.match(/^graph-(?:tb|bt|rl|lr|td);?$/i)
     ) {
-      if (lang === 'sequence-diagram') {
+      if (language === 'sequence') {
         code = 'sequenceDiagram\n' + code + '\n'; // empty line in the end or error
-      } else if (lang === 'gantt') {
+      } else if (language === 'gantt') {
         code = 'gantt\n' + code;
       } else {
-        code = lang.replace('-', ' ') + '\n' + code;
+        code = language.replace('-', ' ') + '\n' + code;
       }
 
       return tmplMermaidGraph({
         code,
-        type: lang,
+        type: language,
       }, templateHelper);
     }
 
     // flowchart
-    if (lang === 'flowchart') {
-      code = map(code.replace(/^\n/, '').split(/\n/), function (line) {
+    if (language === 'flowchart') {
+      code = lang.map(code.replace(/^\n/, '').split(/\n/), function (line) {
         // have to trim
         return lang.trim(line);
       }).join('\n');
@@ -208,7 +192,7 @@ export default function (newOptions) {
 
   renderer.text = function (text) { // text span
     let words = text.split(' ');
-    return map(words, function (word) {
+    return lang.map(words, function (word) {
       word = lang.trim(word);
       if (emojiMap[word]) {
         return tmplEmoji({
@@ -219,6 +203,17 @@ export default function (newOptions) {
       return word;
     }).join(' ');
   };
+
+  let options = lang.extend({
+    figcaption: true,
+    breaks: false,
+    pedantic: false,
+    renderer: renderer,
+    sanitize: false,
+    smartLists: true,
+    smartypants: true,
+    tables: true,
+  }, newOptions);
 
   marked.setOptions(options);
 

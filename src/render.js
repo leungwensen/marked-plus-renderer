@@ -2,8 +2,7 @@ import lang from 'zero-lang';
 import domAttr from 'zero-dom/attr';
 import domQuery from 'zero-dom/query';
 import domStyle from 'zero-dom/style';
-import mermaid from 'mermaid';
-import flowchart from 'mermaid';
+import hljs from 'highlight.js';
 
 const each = lang.each;
 const destroy = lang.destroy;
@@ -12,6 +11,12 @@ let win = lang.global;
 let doc = win.document;
 let body = doc.body;
 let head = doc.getElementsByTagName('head')[0];
+
+//import mermaid from 'mermaid'; // cannot build
+let mermaid = win.mermaid;
+
+//import flowchart from 'flowchart.js/release/flowchart'; // ugly
+let flowchart = win.flowchart;
 
 let flowchartOptions = {
   x: 0,
@@ -30,7 +35,6 @@ let flowchartOptions = {
   scale: 1,
 };
 let flowchartInstanceCache = [];
-
 function renderFlowcharts(scope) {
   /*
    * scope is a node with structure like:
@@ -59,6 +63,11 @@ function renderFlowcharts(scope) {
   });
 }
 
+let mermaidError;
+mermaid.parseError = function (err/*, hash*/) {
+  mermaidError = err;
+};
+
 function renderMermaidGraphs(scope) {
   /*
    * scope is the node to render in
@@ -69,7 +78,7 @@ function renderMermaidGraphs(scope) {
     count++;
     setTimeout(function () { // for optimizing markdown rendering
       try {
-        mermaid.initialize(null, graph);
+        mermaid.init(null, graph);
       } catch (e) {
         console.log(e);
       }
@@ -147,6 +156,9 @@ export default function (compiler, newRenderOptions = {}) {
 
   return function (container, markdownString = '') {
     container.innerHTML = compiler(markdownString);
+    lang.each(domQuery.all('pre code', container), function (block) {
+      hljs.highlightBlock(block);
+    });
 
     renderMermaidGraphs(container); // render mermaid graphs
     renderFlowcharts(container);    // render flowcharts

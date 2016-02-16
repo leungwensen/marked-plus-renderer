@@ -4,7 +4,7 @@
 var gulp = require('gulp');
 
 gulp.task('build', [
-    'pack'
+    'concat'
 ], function (done) {
     done();
 });

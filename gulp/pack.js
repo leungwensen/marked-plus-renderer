@@ -9,6 +9,7 @@ var webpack = require('webpack');
 var webpackConf = require(path.resolve(__dirname, '../webpack.config'));
 
 gulp.task('pack', [
+    'copy',
     'jscs'
 ], function (done) {
     webpack(webpackConf, function (err, stats) {
