@@ -1,4 +1,6 @@
-# marked-plus-renderer
+# [marked-plus-renderer](http://leungwensen.github.io/marked-plus-renderer/)
+
+[homepage](http://leungwensen.github.io/marked-plus-renderer/)
 
 wrap [marked-plus](https://github.com/leungwensen/marked-plus) as a full-feature markdown renderer
 
@@ -8,7 +10,7 @@ wrap [marked-plus](https://github.com/leungwensen/marked-plus) as a full-feature
 
 ## usage
 
-### sample (demo/features.html)
+### sample
 
 ```html
 <!DOCTYPE html>
@@ -16,19 +18,15 @@ wrap [marked-plus](https://github.com/leungwensen/marked-plus) as a full-feature
 <head>
     <meta charset="UTF-8">
     <title>demo</title>
-    <link rel="stylesheet" href="../dist/libs.css">
-    <style>
-    </style>
+    <link rel="stylesheet" href="$path/to/marked-plus-renderer/dist/libs.css">
 </head>
 <body>
     <div id="container" class="markdown-body"></div>
-    <script src="../dist/libs.js"></script>
-    <script src="../dist/renderer.js"></script>
-    <script src="./jquery.js"></script>
+    <script src="$path/to/marked-plus-renderer/dist/libs.js"></script>
+    <script src="$path/to/marked-plus-renderer/dist/renderer.js"></script>
     <script>
-        var container = document.getElementById('container');
-        $.get('../doc/features.md', function(markdownString){
-            mpr.render(container, markdownString);
+        fetch('$path/to/marked-plus-renderer/doc/features.md').then(function(markdownString){
+            mpr.render(document.getElementById('container'), markdownString);
         });
     </script>
 </body>
@@ -43,10 +41,10 @@ npm install marked-plus-renderer --save-dev
 
 ```html
 <!--...-->
-    <link rel="stylesheet" href="../dist/libs.css">
+    <link rel="stylesheet" href="$path/to/marked-plus-renderer/dist/libs.css">
 <!--...-->
-    <script src="path/to/marked-plus-renderer/dist/libs.js"></script>
-    <script src="path/to/main.js"></script>
+    <script src="$path/to/marked-plus-renderer/dist/libs.js"></script>
+    <script src="$path/to/main.js"></script>
 <!--...-->
 ```
 
@@ -55,7 +53,7 @@ in `main.js`
 ```javascript
 import mpr from 'marked-plus-renderer'; 
 
-// codes
+// your codes
 
 mpr.render(container, markdownString);
 ```

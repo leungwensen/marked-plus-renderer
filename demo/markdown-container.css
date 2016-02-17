@@ -1,0 +1,20 @@
+#container {
+    background-color: #fff;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    margin: 30px auto;
+    max-width: 980px;
+    padding: 45px;
+    word-wrap: break-word;
+}
+
+#container figure, #container .mermaid, #container .flowchart-graph {
+    text-align: center;
+}
+
+#container.markdown-body table {
+    margin: 0 auto 16px;
+    display: table;
+    width: auto;
+}
+
