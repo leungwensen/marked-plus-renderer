@@ -58,9 +58,11 @@ Content Cell  | Content Cell
     Content Cell  | Content Cell
     Content Cell  | Content Cell
 
-## `code`
+## inline `code`
 
-    `code()`
+    inline `code()`
+
+## code block
 
 ```javascript
     var specificLanguage_code = {
@@ -81,6 +83,8 @@ Content Cell  | Content Cell
     ```javascript
     ...code...
     ```
+    
+## code highlighting
 
 ## Bullet list
 

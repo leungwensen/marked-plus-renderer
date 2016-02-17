@@ -64,24 +64,15 @@ mpr.render(container, markdownString);
 
 ## features
 
-### all basic markdown features(headings, tables, etc.)
-
-### gfm-like check-list
-
-### definition list
-
-### footnote
-
-### graph
-
-### sequence diagram
-
-### gantt diagram
-
-### flowchart
-
-### latex math typesetting
-
-### emoji
-
-### html/js/css injection
+- [x] all basic markdown features(headings, tables, etc.)
+- [x] gfm-like check-list
+- [x] code highlighting
+- [x] definition list
+- [x] footnote
+- [x] graph
+- [x] sequence diagram
+- [x] gantt diagram
+- [x] flowchart
+- [x] latex math typesetting
+- [x] emoji
+- [x] html/js/css injection
