@@ -32,5 +32,5 @@ gulp.task('copy', function () {
     gulp.src([
             path.resolve(__dirname, '../node_modules/jquery/dist/*.js')
         ])
-        .pipe(gulp.dest(path.resolve(__dirname, '../demo/')));
+        .pipe(gulp.dest(path.resolve(__dirname, '../lib/')));
 });

@@ -304,6 +304,10 @@ Content Cell  | Content Cell
         \hat f(\xi)\,e^{2 \pi i \xi x}
         \,d\xi
     ```
+    
+inline version: `$c = \pm\sqrt{a^2 + b^2}$`
+
+    inline version: `$c = \pm\sqrt{a^2 + b^2}$`
 
 ## Github-like task list
 
@@ -326,8 +330,6 @@ Content Cell  | Content Cell
 
     ##Footnotes[^footnote-1]
     [^footnote-1]: this is the section to introduce the footnote-feature
-
-## ~~Sync the scrolling of editor and previewer~~
 
 ## html/js/css injection
 

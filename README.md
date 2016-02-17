@@ -1,6 +1,6 @@
 # marked-plus-renderer
 
-wrap marked-plus as a full-feature markdown renderer
+wrap [marked-plus](https://github.com/leungwensen/marked-plus) as a full-feature markdown renderer
 
 ## install
 
@@ -59,6 +59,10 @@ import mpr from 'marked-plus-renderer';
 
 mpr.render(container, markdownString);
 ```
+
+## demo
+
+* [features](./demo/features.html)
 
 ## features
 
