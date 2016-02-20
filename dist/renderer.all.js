@@ -13074,7 +13074,7 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	var toPixel = undefined;
 	var domStyle = undefined;
 	var getOpacity = undefined;
-	var setOpacity = undefined;
+	var _setOpacity = undefined;
 	
 	function af(n, f) {
 	    try {
@@ -13157,14 +13157,14 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	}
 	
 	if (ieVersion && (ieVersion < 9 || ieVersion < 10 && bomUtils.isQuirks)) {
-	    getOpacity = function (node) {
+	    getOpacity = function getOpacity(node) {
 	        try {
 	            return af(node).Opacity / 100; // Number
 	        } catch (e) {
 	            return 1; // Number
 	        }
 	    };
-	    setOpacity = function ( /*DomNode*/node, /*Number*/opacity) {
+	    _setOpacity = function setOpacity( /*DomNode*/node, /*Number*/opacity) {
 	        if (opacity === '') {
 	            opacity = 1;
 	        }
@@ -13192,17 +13192,17 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	        if (node.tagName.toLowerCase() === 'tr') {
 	            for (var td = node.firstChild; td; td = td.nextSibling) {
 	                if (td.tagName.toLowerCase() === 'td') {
-	                    setOpacity(td, opacity);
+	                    _setOpacity(td, opacity);
 	                }
 	            }
 	        }
 	        return opacity;
 	    };
 	} else {
-	    getOpacity = function (node) {
+	    getOpacity = function getOpacity(node) {
 	        return getComputedStyle(node).opacity;
 	    };
-	    setOpacity = function (node, opacity) {
+	    _setOpacity = function _setOpacity(node, opacity) {
 	        node.style.opacity = opacity;
 	        return opacity;
 	    };
@@ -13210,7 +13210,7 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	
 	// getComputedStyle {
 	if (bomUtils.isWebkit) {
-	    getComputedStyle = function (node) {
+	    getComputedStyle = function getComputedStyle(node) {
 	        var style = undefined;
 	        if (node.nodeType === 1) {
 	            var dv = node.ownerDocument.defaultView;
@@ -13230,18 +13230,18 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	        return style || {};
 	    };
 	} else if (ieVersion && ieVersion < 9 || bomUtils.isQuirks) {
-	    getComputedStyle = function (node) {
+	    getComputedStyle = function getComputedStyle(node) {
 	        return node.nodeType === 1 && node.currentStyle ? node.currentStyle : {};
 	    };
 	} else {
-	    getComputedStyle = function (node) {
+	    getComputedStyle = function getComputedStyle(node) {
 	        return node.nodeType === 1 ? node.ownerDocument.defaultView.getComputedStyle(node, null) : {};
 	    };
 	}
 	// }
 	// toPixel {
 	if (ieVersion) {
-	    toPixel = function (element, avalue) {
+	    toPixel = function toPixel(element, avalue) {
 	        if (!avalue) {
 	            return 0;
 	        }
@@ -13275,7 +13275,7 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	        return avalue;
 	    };
 	} else {
-	    toPixel = function (element, value) {
+	    toPixel = function toPixel(element, value) {
 	        return parseFloat(value) || 0;
 	    };
 	}
@@ -13304,7 +13304,7 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	
 	        name = floatAlias[name] ? 'cssFloat' in n.style ? 'cssFloat' : 'styleFloat' : name;
 	        if (l === 3) {
-	            return op ? setOpacity(n, value) : n.style[name] = value;
+	            return op ? _setOpacity(n, value) : n.style[name] = value;
 	        }
 	        for (var x in name) {
 	            domStyle.set(node, x, name[x]);
@@ -13561,6 +13561,7 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	
 	var bomUtils = __webpack_require__(50);
 	var arrayUtils = __webpack_require__(31);
+	var objectUtils = __webpack_require__(29);
 	var stringUtils = __webpack_require__(33);
 	var checkType = __webpack_require__(30);
 	
@@ -13587,7 +13588,7 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	var doc = document || win.document;
 	var masterDiv = doc.createElement('div');
 	
-	arrayUtils.each(tagWrap, function (tw, param) {
+	objectUtils.forIn(tagWrap, function (tw, param) {
 	    tw.pre = param === 'option' ? '<select multiple="multiple">' : '<' + tw.join('><') + '>';
 	    tw.post = '</' + tw.reverse().join('></') + '>';
 	});

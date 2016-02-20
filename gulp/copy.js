@@ -29,8 +29,4 @@ gulp.task('copy', function () {
             path.resolve(__dirname, '../node_modules/katex-all/dist/fonts/*')
         ])
         .pipe(gulp.dest(path.resolve(__dirname, '../dist/fonts/')));
-    gulp.src([
-            path.resolve(__dirname, '../node_modules/jquery/dist/*.js')
-        ])
-        .pipe(gulp.dest(path.resolve(__dirname, '../lib/')));
 });

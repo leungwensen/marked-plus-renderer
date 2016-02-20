@@ -3,7 +3,9 @@
  */
 import fetch from 'zero-net/fetch';
 import domQuery from 'zero-dom/query';
-import mpr from '../src/index';
+import win from 'zero-lang/global';
+
+let mpr = win.mpr;
 
 fetch('../doc/features.md')
     .then(function (res) {
