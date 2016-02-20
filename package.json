@@ -3,8 +3,8 @@
     "title": "marked-plus-renderer",
     "description": "marked with a few more features",
     "homepage": "https://github.com/leungwensen/marked-plus-renderer",
-    "version": "0.0.20160216",
-    "main": "dist/renderer.js",
+    "version": "0.0.20160220",
+    "main": "src/index.js",
     "license": "MIT",
     "author": {
         "description": "team of leungwensen",
@@ -22,7 +22,7 @@
         "marked-plus": "^0.0.20160202",
         "mermaid": "^0.5.8",
         "raphael": "^2.1.4",
-        "zero-dom": "^0.0.20151202",
+        "zero-dom": "^0.0.20160220",
         "zero-fmt": "^0.0.20151202",
         "zero-lang": "^0.0.20151202",
         "zero-text": "^0.0.20160127"
@@ -47,7 +47,8 @@
         "through2": "^2.0.0",
         "url-loader": "^0.5.7",
         "webpack": "^1.12.11",
-        "webpack-dev-server": "^1.14.1"
+        "webpack-dev-server": "^1.14.1",
+        "zero-net": "^0.0.20151202"
     },
     "scripts": {
     },

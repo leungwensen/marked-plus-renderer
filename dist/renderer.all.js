@@ -90,7 +90,7 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	
 	var _global = __webpack_require__(1);
@@ -111,21 +111,21 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	var renderer = (0, _render2.default)(compiler);
 	
 	var main = {
-	  setOptions: function setOptions(compileOptions, renderOptions) {
-	    if (compileOptions) {
-	      compiler = (0, _compile2.default)(compileOptions);
-	    }
+	    setOptions: function setOptions(compileOptions, renderOptions) {
+	        if (compileOptions) {
+	            compiler = (0, _compile2.default)(compileOptions);
+	        }
 	
-	    if (renderOptions) {
-	      renderer = (0, _render2.default)(compiler, renderOptions);
+	        if (renderOptions) {
+	            renderer = (0, _render2.default)(compiler, renderOptions);
+	        }
+	    },
+	    compile: function compile(markdownString) {
+	        return compiler(markdownString);
+	    },
+	    render: function render(container, markdownString) {
+	        renderer(container, markdownString);
 	    }
-	  },
-	  compile: function compile(markdownString) {
-	    return compiler(markdownString);
-	  },
-	  render: function render(container, markdownString) {
-	    renderer(container, markdownString);
-	  }
 	};
 	
 	_global2.default.mpr = _global2.default.markedPlusRenderer = main;
@@ -155,214 +155,214 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	
 	exports.default = function (newOptions) {
-	  var Renderer = _markedPlus2.default.Renderer;
-	  var RendererPrototype = Renderer.prototype;
-	  var renderer = new Renderer();
+	    var Renderer = _markedPlus2.default.Renderer;
+	    var RendererPrototype = Renderer.prototype;
+	    var renderer = new Renderer();
 	
-	  _markedPlus2.default.__scriptsToLoad = [];
-	  _markedPlus2.default.__linksToLoad = [];
-	  _markedPlus2.default.__jsCodeToLoad = '';
-	  _markedPlus2.default.__cssCodeToLoad = '';
+	    _markedPlus2.default.__scriptsToLoad = [];
+	    _markedPlus2.default.__linksToLoad = [];
+	    _markedPlus2.default.__jsCodeToLoad = '';
+	    _markedPlus2.default.__cssCodeToLoad = '';
 	
-	  function add2arr(arr, items) {
-	    _zeroLang2.default.each(items, function (item) {
-	      item = _zeroLang2.default.trim(item);
-	      if (item && arr.indexOf(item) === -1) {
-	        arr.push(item);
-	      }
-	    });
-	  }
-	
-	  renderer.listitem = function (text) {
-	    // list item
-	    if (!/^\[[ x]\]\s/.test(text)) {
-	      // normal list item
-	      return _markedPlus2.default.Renderer.prototype.listitem(text);
-	    }
-	
-	    return (0, _taskListItem2.default)({
-	      checked: /^\[x\]\s/.test(text),
-	      text: text.substring(3)
-	    }, templateHelper);
-	  };
-	
-	  renderer.codespan = function (code) {
-	    // inline code
-	    if (/^\$.+\$$/.test(code)) {
-	      // inline math typesetting
-	      var raw = /^\$(.+)\$$/.exec(code)[1];
-	      var line = _html2.default.unescape(raw);
-	      try {
-	        return _katexAll2.default.renderToString(line, {
-	          displayMode: false
+	    function add2arr(arr, items) {
+	        _zeroLang2.default.each(items, function (item) {
+	            item = _zeroLang2.default.trim(item);
+	            if (item && arr.indexOf(item) === -1) {
+	                arr.push(item);
+	            }
 	        });
-	      } catch (err) {
-	        return (0, _sprintf2.default)('<code>%s</code>', err);
-	      }
 	    }
 	
-	    return RendererPrototype.codespan.apply(this, arguments);
-	  };
-	
-	  renderer.code = function (code, language, escaped, lineNumber) {
-	    // code block
-	    code = _zeroLang2.default.trim(code);
-	    language = language || '';
-	
-	    if (language === 'markdown' || language === 'md') {
-	      return RendererPrototype.code.apply(this, arguments);
-	    }
-	
-	    // html injection
-	    if (language === 'html+') {
-	      language = 'html';
-	      return RendererPrototype.code.apply(this, arguments) + code;
-	    }
-	
-	    if (language === 'html-') {
-	      return code;
-	    }
-	
-	    if (language === 'js+' || language === 'javascript+') {
-	      language = 'javascript';
-	      _markedPlus2.default.__jsCodeToLoad += '\n' + code;
-	      return RendererPrototype.code.apply(this, arguments);
-	    }
-	
-	    if (language === 'js-' || language === 'javascript-') {
-	      _markedPlus2.default.__jsCodeToLoad += '\n' + code;
-	      return '';
-	    }
-	
-	    if (language === 'css+' || language === 'style+') {
-	      language = 'css';
-	      _markedPlus2.default.__cssCodeToLoad += '\n' + code;
-	      return RendererPrototype.code.apply(this, arguments);
-	    }
-	
-	    if (language === 'css-' || language === 'style-') {
-	      _markedPlus2.default.__cssCodeToLoad += '\n' + code;
-	      return '';
-	    }
-	
-	    // load resources with link/source
-	    if (language === 'script+') {
-	      language = 'html';
-	      add2arr(_markedPlus2.default.__scriptsToLoad, code.split(/\n/));
-	      return RendererPrototype.code.apply(this, arguments);
-	    }
-	
-	    if (language === 'script-') {
-	      add2arr(_markedPlus2.default.__scriptsToLoad, code.split(/\n/));
-	      return '';
-	    }
-	
-	    if (language === 'link+') {
-	      language = 'html';
-	      add2arr(_markedPlus2.default.__linksToLoad, code.split(/\n/));
-	      return RendererPrototype.code.apply(this, arguments);
-	    }
-	
-	    if (language === 'link-') {
-	      add2arr(_markedPlus2.default.__linksToLoad, code.split(/\n/));
-	      return '';
-	    }
-	
-	    if (language === 'tex-math' || language === 'katex' || language === 'math') {
-	      // will use mathjax instead later?
-	      var tex = '';
-	      _zeroLang2.default.each(code.split(/\n\n/), function (line) {
-	        // next if we have two empty lines
-	        line = _zeroLang2.default.trim(line);
-	        if (line.length > 0) {
-	          try {
-	            tex += _katexAll2.default.renderToString(line, {
-	              displayMode: true
-	            });
-	          } catch (err) {
-	            tex += (0, _sprintf2.default)('<pre>%s</pre>', err);
-	          }
-	        }
-	      });
-	
-	      return (0, _math2.default)({
-	        lineNumber: lineNumber,
-	        tex: tex
-	      }, templateHelper);
-	    }
-	
-	    // mermaid
-	    if (language === 'gantt' || language === 'sequence' || language.match(/^graph-(?:tb|bt|rl|lr|td);?$/i)) {
-	      if (language === 'sequence') {
-	        code = 'sequenceDiagram\n' + code + '\n'; // empty line in the end or error
-	      } else if (language === 'gantt') {
-	          code = 'gantt\n' + code;
-	        } else {
-	          code = language.replace('-', ' ') + '\n' + code;
+	    renderer.listitem = function (text) {
+	        // list item
+	        if (!/^\[[ x]\]\s/.test(text)) {
+	            // normal list item
+	            return _markedPlus2.default.Renderer.prototype.listitem(text);
 	        }
 	
-	      return (0, _mermaid2.default)({
-	        code: code,
-	        type: language
-	      }, templateHelper);
-	    }
-	
-	    // flowchart
-	    if (language === 'flowchart') {
-	      code = _zeroLang2.default.map(code.replace(/^\n/, '').split(/\n/), function (line) {
-	        // have to trim
-	        return _zeroLang2.default.trim(line);
-	      }).join('\n');
-	      return (0, _flowchart2.default)({
-	        code: code
-	      }, templateHelper);
-	    }
-	
-	    return RendererPrototype.code.apply(this, arguments);
-	  };
-	
-	  renderer.image = function (href, title, text) {
-	    return (0, _figure2.default)({
-	      href: href,
-	      text: text,
-	      figcaption: options.figcaption,
-	      title: title || ''
-	    }, templateHelper);
-	  };
-	
-	  renderer.text = function (text) {
-	    // text span
-	    var words = text.split(' ');
-	    return _zeroLang2.default.map(words, function (word) {
-	      word = _zeroLang2.default.trim(word);
-	      if (_emojiMap2.default[word]) {
-	        return (0, _emoji2.default)({
-	          emoji: _emojiMap2.default[word]
+	        return (0, _taskListItem2.default)({
+	            checked: /^\[x\]\s/.test(text),
+	            text: text.substring(3)
 	        }, templateHelper);
-	      }
+	    };
 	
-	      return word;
-	    }).join(' ');
-	  };
+	    renderer.codespan = function (code) {
+	        // inline code
+	        if (/^\$.+\$$/.test(code)) {
+	            // inline math typesetting
+	            var raw = /^\$(.+)\$$/.exec(code)[1];
+	            var line = _html2.default.unescape(raw);
+	            try {
+	                return _katexAll2.default.renderToString(line, {
+	                    displayMode: false
+	                });
+	            } catch (err) {
+	                return (0, _sprintf2.default)('<code>%s</code>', err);
+	            }
+	        }
 	
-	  var options = _zeroLang2.default.extend({
-	    figcaption: true,
-	    breaks: false,
-	    pedantic: false,
-	    renderer: renderer,
-	    sanitize: false,
-	    smartLists: true,
-	    smartypants: true,
-	    tables: true
-	  }, newOptions);
+	        return RendererPrototype.codespan.apply(this, arguments);
+	    };
 	
-	  _markedPlus2.default.setOptions(options);
+	    renderer.code = function (code, language, escaped, lineNumber) {
+	        // code block
+	        code = _zeroLang2.default.trim(code);
+	        language = language || '';
 	
-	  return _markedPlus2.default;
+	        if (language === 'markdown' || language === 'md') {
+	            return RendererPrototype.code.apply(this, arguments);
+	        }
+	
+	        // html injection
+	        if (language === 'html+') {
+	            language = 'html';
+	            return RendererPrototype.code.apply(this, arguments) + code;
+	        }
+	
+	        if (language === 'html-') {
+	            return code;
+	        }
+	
+	        if (language === 'js+' || language === 'javascript+') {
+	            language = 'javascript';
+	            _markedPlus2.default.__jsCodeToLoad += '\n' + code;
+	            return RendererPrototype.code.apply(this, arguments);
+	        }
+	
+	        if (language === 'js-' || language === 'javascript-') {
+	            _markedPlus2.default.__jsCodeToLoad += '\n' + code;
+	            return '';
+	        }
+	
+	        if (language === 'css+' || language === 'style+') {
+	            language = 'css';
+	            _markedPlus2.default.__cssCodeToLoad += '\n' + code;
+	            return RendererPrototype.code.apply(this, arguments);
+	        }
+	
+	        if (language === 'css-' || language === 'style-') {
+	            _markedPlus2.default.__cssCodeToLoad += '\n' + code;
+	            return '';
+	        }
+	
+	        // load resources with link/source
+	        if (language === 'script+') {
+	            language = 'html';
+	            add2arr(_markedPlus2.default.__scriptsToLoad, code.split(/\n/));
+	            return RendererPrototype.code.apply(this, arguments);
+	        }
+	
+	        if (language === 'script-') {
+	            add2arr(_markedPlus2.default.__scriptsToLoad, code.split(/\n/));
+	            return '';
+	        }
+	
+	        if (language === 'link+') {
+	            language = 'html';
+	            add2arr(_markedPlus2.default.__linksToLoad, code.split(/\n/));
+	            return RendererPrototype.code.apply(this, arguments);
+	        }
+	
+	        if (language === 'link-') {
+	            add2arr(_markedPlus2.default.__linksToLoad, code.split(/\n/));
+	            return '';
+	        }
+	
+	        if (language === 'tex-math' || language === 'katex' || language === 'math') {
+	            // will use mathjax instead later?
+	            var tex = '';
+	            _zeroLang2.default.each(code.split(/\n\n/), function (line) {
+	                // next if we have two empty lines
+	                line = _zeroLang2.default.trim(line);
+	                if (line.length > 0) {
+	                    try {
+	                        tex += _katexAll2.default.renderToString(line, {
+	                            displayMode: true
+	                        });
+	                    } catch (err) {
+	                        tex += (0, _sprintf2.default)('<pre>%s</pre>', err);
+	                    }
+	                }
+	            });
+	
+	            return (0, _math2.default)({
+	                lineNumber: lineNumber,
+	                tex: tex
+	            }, templateHelper);
+	        }
+	
+	        // mermaid
+	        if (language === 'gantt' || language === 'sequence' || language.match(/^graph-(?:tb|bt|rl|lr|td);?$/i)) {
+	            if (language === 'sequence') {
+	                code = 'sequenceDiagram\n' + code + '\n'; // empty line in the end or error
+	            } else if (language === 'gantt') {
+	                    code = 'gantt\n' + code;
+	                } else {
+	                    code = language.replace('-', ' ') + '\n' + code;
+	                }
+	
+	            return (0, _mermaid2.default)({
+	                code: code,
+	                type: language
+	            }, templateHelper);
+	        }
+	
+	        // flowchart
+	        if (language === 'flowchart') {
+	            code = _zeroLang2.default.map(code.replace(/^\n/, '').split(/\n/), function (line) {
+	                // have to trim
+	                return _zeroLang2.default.trim(line);
+	            }).join('\n');
+	            return (0, _flowchart2.default)({
+	                code: code
+	            }, templateHelper);
+	        }
+	
+	        return RendererPrototype.code.apply(this, arguments);
+	    };
+	
+	    renderer.image = function (href, title, text) {
+	        return (0, _figure2.default)({
+	            href: href,
+	            text: text,
+	            figcaption: options.figcaption,
+	            title: title || ''
+	        }, templateHelper);
+	    };
+	
+	    renderer.text = function (text) {
+	        // text span
+	        var words = text.split(' ');
+	        return _zeroLang2.default.map(words, function (word) {
+	            word = _zeroLang2.default.trim(word);
+	            if (_emojiMap2.default[word]) {
+	                return (0, _emoji2.default)({
+	                    emoji: _emojiMap2.default[word]
+	                }, templateHelper);
+	            }
+	
+	            return word;
+	        }).join(' ');
+	    };
+	
+	    var options = _zeroLang2.default.extend({
+	        figcaption: true,
+	        breaks: false,
+	        pedantic: false,
+	        renderer: renderer,
+	        sanitize: false,
+	        smartLists: true,
+	        smartypants: true,
+	        tables: true
+	    }, newOptions);
+	
+	    _markedPlus2.default.setOptions(options);
+	
+	    return _markedPlus2.default;
 	};
 	
 	var _emojiMap = __webpack_require__(3);
@@ -12349,14 +12349,14 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.default = anonymous;
 	function anonymous(data, helper
 	/**/) {
-	  data = data || {};helper = helper || {};var _e = helper.escape ? helper.escape : function (s) {
-	    return s;
-	  };var _s = '<style type="text/css">' + (data.code == null ? '' : data.code) + '</style>';return _s;
+	    data = data || {};helper = helper || {};var _e = helper.escape ? helper.escape : function (s) {
+	        return s;
+	    };var _s = '<style type="text/css">' + (data.code == null ? '' : data.code) + '</style>';return _s;
 	};
 
 /***/ },
@@ -12366,14 +12366,14 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.default = anonymous;
 	function anonymous(data, helper
 	/**/) {
-	  data = data || {};helper = helper || {};var _e = helper.escape ? helper.escape : function (s) {
-	    return s;
-	  };var _s = '<span style="font-weight: normal !important;">' + (data.emoji == null ? '' : data.emoji) + '</span>';return _s;
+	    data = data || {};helper = helper || {};var _e = helper.escape ? helper.escape : function (s) {
+	        return s;
+	    };var _s = '<span style="font-weight: normal !important;">' + (data.emoji == null ? '' : data.emoji) + '</span>';return _s;
 	};
 
 /***/ },
@@ -12383,16 +12383,16 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.default = anonymous;
 	function anonymous(data, helper
 	/**/) {
-	  data = data || {};helper = helper || {};var _e = helper.escape ? helper.escape : function (s) {
-	    return s;
-	  };var _s = '<figure><img src="' + _e(data.href) + '" alt="' + _e(data.text) + '" title="' + _e(data.title) + '"/>';if (data.figcaption) {
-	    _s += '<figcaption>' + _e(data.text) + '</figcaption>';
-	  }_s += '</figure>';return _s;
+	    data = data || {};helper = helper || {};var _e = helper.escape ? helper.escape : function (s) {
+	        return s;
+	    };var _s = '<figure><img src="' + _e(data.href) + '" alt="' + _e(data.text) + '" title="' + _e(data.title) + '"/>';if (data.figcaption) {
+	        _s += '<figcaption>' + _e(data.text) + '</figcaption>';
+	    }_s += '</figure>';return _s;
 	};
 
 /***/ },
@@ -12402,14 +12402,14 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.default = anonymous;
 	function anonymous(data, helper
 	/**/) {
-	  data = data || {};helper = helper || {};var _e = helper.escape ? helper.escape : function (s) {
-	    return s;
-	  };var _s = '<div class="flowchart"><script type="text/template" class="flowchart-code">' + (data.code == null ? '' : data.code) + '</script><div class="flowchart-graph"></div></div>';return _s;
+	    data = data || {};helper = helper || {};var _e = helper.escape ? helper.escape : function (s) {
+	        return s;
+	    };var _s = '<div class="flowchart"><script type="text/template" class="flowchart-code">' + (data.code == null ? '' : data.code) + '</script><div class="flowchart-graph"></div></div>';return _s;
 	};
 
 /***/ },
@@ -12419,14 +12419,14 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.default = anonymous;
 	function anonymous(data, helper
 	/**/) {
-	  data = data || {};helper = helper || {};var _e = helper.escape ? helper.escape : function (s) {
-	    return s;
-	  };var _s = '<script async>' + (data.code == null ? '' : data.code) + '</script>';return _s;
+	    data = data || {};helper = helper || {};var _e = helper.escape ? helper.escape : function (s) {
+	        return s;
+	    };var _s = '<script async>' + (data.code == null ? '' : data.code) + '</script>';return _s;
 	};
 
 /***/ },
@@ -12436,14 +12436,14 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.default = anonymous;
 	function anonymous(data, helper
 	/**/) {
-	  data = data || {};helper = helper || {};var _e = helper.escape ? helper.escape : function (s) {
-	    return s;
-	  };var _s = '<div data-line="' + _e(data.lineNumber) + '">' + (data.tex == null ? '' : data.tex) + '</div>';return _s;
+	    data = data || {};helper = helper || {};var _e = helper.escape ? helper.escape : function (s) {
+	        return s;
+	    };var _s = '<div data-line="' + _e(data.lineNumber) + '">' + (data.tex == null ? '' : data.tex) + '</div>';return _s;
 	};
 
 /***/ },
@@ -12453,14 +12453,14 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.default = anonymous;
 	function anonymous(data, helper
 	/**/) {
-	  data = data || {};helper = helper || {};var _e = helper.escape ? helper.escape : function (s) {
-	    return s;
-	  };var _s = '<div class="mermaid" data-type="' + _e(data.type) + '">' + (data.code == null ? '' : data.code) + '</div>';return _s;
+	    data = data || {};helper = helper || {};var _e = helper.escape ? helper.escape : function (s) {
+	        return s;
+	    };var _s = '<div class="mermaid" data-type="' + _e(data.type) + '">' + (data.code == null ? '' : data.code) + '</div>';return _s;
 	};
 
 /***/ },
@@ -12470,16 +12470,16 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.default = anonymous;
 	function anonymous(data, helper
 	/**/) {
-	  data = data || {};helper = helper || {};var _e = helper.escape ? helper.escape : function (s) {
-	    return s;
-	  };var _s = '<li class="task-list-item"><input type="checkbox" disabled ';if (data.checked) {
-	    _s += ' checked ';
-	  }_s += '>' + (data.text == null ? '' : data.text) + '</li>';return _s;
+	    data = data || {};helper = helper || {};var _e = helper.escape ? helper.escape : function (s) {
+	        return s;
+	    };var _s = '<li class="task-list-item"><input type="checkbox" disabled ';if (data.checked) {
+	        _s += ' checked ';
+	    }_s += '>' + (data.text == null ? '' : data.text) + '</li>';return _s;
 	};
 
 /***/ },
@@ -12489,33 +12489,33 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	
 	exports.default = function (compiler) {
-	  var newRenderOptions = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	    var newRenderOptions = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 	
-	  _zeroLang2.default.extend(flowchartOptions, newRenderOptions.flowchart);
-	  if (newRenderOptions.mermaid) {
-	    mermaid.initialize(newRenderOptions.mermaid);
-	  }
+	    _zeroLang2.default.extend(flowchartOptions, newRenderOptions.flowchart);
+	    if (newRenderOptions.mermaid) {
+	        mermaid.initialize(newRenderOptions.mermaid);
+	    }
 	
-	  return function (container) {
-	    var markdownString = arguments.length <= 1 || arguments[1] === undefined ? '' : arguments[1];
+	    return function (container) {
+	        var markdownString = arguments.length <= 1 || arguments[1] === undefined ? '' : arguments[1];
 	
-	    container.innerHTML = compiler(markdownString);
-	    _zeroLang2.default.each(_query2.default.all('pre code', container), function (block) {
-	      _highlight2.default.highlightBlock(block);
-	    });
+	        container.innerHTML = compiler(markdownString);
+	        _zeroLang2.default.each(_query2.default.all('pre code', container), function (block) {
+	            _highlight2.default.highlightBlock(block);
+	        });
 	
-	    renderMermaidGraphs(container); // render mermaid graphs
-	    renderFlowcharts(container); // render flowcharts
+	        renderMermaidGraphs(container); // render mermaid graphs
+	        renderFlowcharts(container); // render flowcharts
 	
-	    loadCssCode(compiler.__cssCodeToLoad);
-	    loadLinkFiles(compiler.__linksToLoad);
-	    loadJsCode(compiler.__jsCodeToLoad);
-	    loadJsFiles(compiler.__scriptsToLoad);
-	  };
+	        loadCssCode(compiler.__cssCodeToLoad);
+	        loadLinkFiles(compiler.__linksToLoad);
+	        loadJsCode(compiler.__jsCodeToLoad);
+	        loadJsFiles(compiler.__scriptsToLoad);
+	    };
 	};
 	
 	var _zeroLang = __webpack_require__(28);
@@ -12555,135 +12555,135 @@ this._input=this._input.slice(1),t},unput:function(t){var e=t.length,n=t.split(/
 	var flowchart = win.flowchart;
 	
 	var flowchartOptions = {
-	  x: 0,
-	  y: 0,
-	  'line-width': 2,
-	  'line-length': 40,
-	  'text-margin': 10,
-	  'font-size': 14,
-	  'font-color': 'black',
-	  'line-color': 'grey',
-	  'element-color': 'grey',
-	  fill: 'lightyellow',
-	  'yes-text': 'yes',
-	  'no-text': 'no',
-	  'arrow-end': 'block',
-	  scale: 1
+	    x: 0,
+	    y: 0,
+	    'line-width': 2,
+	    'line-length': 40,
+	    'text-margin': 10,
+	    'font-size': 14,
+	    'font-color': 'black',
+	    'line-color': 'grey',
+	    'element-color': 'grey',
+	    fill: 'lightyellow',
+	    'yes-text': 'yes',
+	    'no-text': 'no',
+	    'arrow-end': 'block',
+	    scale: 1
 	};
 	var flowchartInstanceCache = [];
 	function renderFlowcharts(scope) {
-	  /*
-	   * scope is a node with structure like:
-	   *     <div class="flowchart">
-	   *         <div class="flowchart-graph"></div>
-	   *         <script class="flowchart-code">{%= code %}</script>
-	   *     </div>
-	   */
-	  each(flowchartInstanceCache, function (instance) {
-	    destroy(instance);
-	  });
+	    /*
+	     * scope is a node with structure like:
+	     *     <div class="flowchart">
+	     *         <div class="flowchart-graph"></div>
+	     *         <script class="flowchart-code">{%= code %}</script>
+	     *     </div>
+	     */
+	    each(flowchartInstanceCache, function (instance) {
+	        destroy(instance);
+	    });
 	
-	  flowchartInstanceCache = [];
-	  each(_query2.default.all('.flowchart', scope), function (container, index) {
-	    setTimeout(function () {
-	      // for optimizing markdown rendering
-	      try {
-	        var codeElement = _query2.default.one('.flowchart-code', container);
-	        var graphElement = _query2.default.one('.flowchart-graph', container);
-	        var diagram = flowchart.parse(codeElement.innerHTML);
-	        diagram.drawSVG(graphElement, flowchartOptions);
-	        flowchartInstanceCache.push(diagram);
-	      } catch (e) {
-	        console.log(e);
-	      }
-	    }, 50 * (index + 1));
-	  });
+	    flowchartInstanceCache = [];
+	    each(_query2.default.all('.flowchart', scope), function (container, index) {
+	        setTimeout(function () {
+	            // for optimizing markdown rendering
+	            try {
+	                var codeElement = _query2.default.one('.flowchart-code', container);
+	                var graphElement = _query2.default.one('.flowchart-graph', container);
+	                var diagram = flowchart.parse(codeElement.innerHTML);
+	                diagram.drawSVG(graphElement, flowchartOptions);
+	                flowchartInstanceCache.push(diagram);
+	            } catch (e) {
+	                console.log(e);
+	            }
+	        }, 50 * (index + 1));
+	    });
 	}
 	
 	var mermaidError = undefined;
 	mermaid.parseError = function (err /*, hash*/) {
-	  mermaidError = err;
+	    mermaidError = err;
 	};
 	
 	function renderMermaidGraphs(scope) {
-	  /*
-	   * scope is the node to render in
-	   */
-	  scope = scope || document.body;
-	  var count = 0;
-	  each(_query2.default.all('.mermaid', scope), function (graph, index) {
-	    count++;
-	    setTimeout(function () {
-	      // for optimizing markdown rendering
-	      try {
-	        mermaid.init(null, graph);
-	      } catch (e) {
-	        console.log(e);
-	      }
-	    }, 50 * (index + 1));
-	  });
-	
-	  setTimeout(function () {
-	    // fix GANTT diagrams (width of lanes is not set correctly) {
-	    var ganttGraphs = _query2.default.all('.mermaid[data-type=gantt] svg', scope);
-	    each(ganttGraphs, function (svg) {
-	      var lanes = _query2.default.all('g rect.section');
-	      each(lanes, function (lane) {
-	        _attr2.default.set(lane, 'width', _style2.default.get(svg, 'width'));
-	      });
+	    /*
+	     * scope is the node to render in
+	     */
+	    scope = scope || document.body;
+	    var count = 0;
+	    each(_query2.default.all('.mermaid', scope), function (graph, index) {
+	        count++;
+	        setTimeout(function () {
+	            // for optimizing markdown rendering
+	            try {
+	                mermaid.init(null, graph);
+	            } catch (e) {
+	                console.log(e);
+	            }
+	        }, 50 * (index + 1));
 	    });
 	
-	    // }
-	  }, 50 * (count + 2));
+	    setTimeout(function () {
+	        // fix GANTT diagrams (width of lanes is not set correctly) {
+	        var ganttGraphs = _query2.default.all('.mermaid[data-type=gantt] svg', scope);
+	        each(ganttGraphs, function (svg) {
+	            var lanes = _query2.default.all('g rect.section');
+	            each(lanes, function (lane) {
+	                _attr2.default.set(lane, 'width', _style2.default.get(svg, 'width'));
+	            });
+	        });
+	
+	        // }
+	    }, 50 * (count + 2));
 	}
 	
 	function loadJsFiles(files, index) {
-	  index = index || 0;
-	  if (files[index]) {
-	    var element = doc.createElement('script');
-	    _attr2.default.set(element, 'type', 'text/javascript');
-	    _attr2.default.set(element, 'async', 'true');
-	    _attr2.default.set(element, 'src', files[index]);
-	    element.onload = element.onreadystatechange = function () {
-	      if (index < files.length - 1) {
-	        loadJsFiles(files, index + 1);
-	      }
-	    };
+	    index = index || 0;
+	    if (files[index]) {
+	        var element = doc.createElement('script');
+	        _attr2.default.set(element, 'type', 'text/javascript');
+	        _attr2.default.set(element, 'async', 'true');
+	        _attr2.default.set(element, 'src', files[index]);
+	        element.onload = element.onreadystatechange = function () {
+	            if (index < files.length - 1) {
+	                loadJsFiles(files, index + 1);
+	            }
+	        };
 	
-	    body.appendChild(element);
-	  }
+	        body.appendChild(element);
+	    }
 	}
 	
 	function loadLinkFiles(files, index) {
-	  index = index || 0;
-	  if (files[index]) {
-	    var element = doc.createElement('link');
-	    _attr2.default.set(element, 'type', 'text/css');
-	    _attr2.default.set(element, 'async', 'true');
-	    _attr2.default.set(element, 'rel', 'stylesheet');
-	    _attr2.default.set(element, 'href', files[index]);
-	    element.onload = element.onreadystatechange = function () {
-	      if (index < files.length - 1) {
-	        loadLinkFiles(files, index + 1);
-	      }
-	    };
+	    index = index || 0;
+	    if (files[index]) {
+	        var element = doc.createElement('link');
+	        _attr2.default.set(element, 'type', 'text/css');
+	        _attr2.default.set(element, 'async', 'true');
+	        _attr2.default.set(element, 'rel', 'stylesheet');
+	        _attr2.default.set(element, 'href', files[index]);
+	        element.onload = element.onreadystatechange = function () {
+	            if (index < files.length - 1) {
+	                loadLinkFiles(files, index + 1);
+	            }
+	        };
 	
-	    head.appendChild(element);
-	  }
+	        head.appendChild(element);
+	    }
 	}
 	
 	function loadJsCode(code) {
-	  var element = doc.createElement('script');
-	  _attr2.default.set(element, 'type', 'text/javascript');
-	  element.innerHTML = code;
-	  body.appendChild(element);
+	    var element = doc.createElement('script');
+	    _attr2.default.set(element, 'type', 'text/javascript');
+	    element.innerHTML = code;
+	    body.appendChild(element);
 	}
 	
 	function loadCssCode(code) {
-	  var element = doc.createElement('style');
-	  _attr2.default.set(element, 'type', 'text/css');
-	  element.innerHTML = code;
-	  head.appendChild(element);
+	    var element = doc.createElement('style');
+	    _attr2.default.set(element, 'type', 'text/css');
+	    element.innerHTML = code;
+	    head.appendChild(element);
 	}
 	
 	;
