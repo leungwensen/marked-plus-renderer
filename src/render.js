@@ -49,17 +49,18 @@ function renderFlowcharts(scope) {
 
     flowchartInstanceCache = [];
     each(domQuery.all('.flowchart', scope), function (container, index) {
-        setTimeout(function () { // for optimizing markdown rendering
-            try {
-                var codeElement = domQuery.one('.flowchart-code', container);
-                var graphElement = domQuery.one('.flowchart-graph', container);
-                var diagram = flowchart.parse(codeElement.innerHTML);
-                diagram.drawSVG(graphElement, flowchartOptions);
-                flowchartInstanceCache.push(diagram);
-            } catch (e) {
-                console.log(e);
-            }
-        }, 50 * (index + 1));
+        //setTimeout(function () { // for optimizing markdown rendering
+        try {
+            var codeElement = domQuery.one('.flowchart-code', container);
+            var graphElement = domQuery.one('.flowchart-graph', container);
+            var diagram = flowchart.parse(codeElement.innerHTML);
+            diagram.drawSVG(graphElement, flowchartOptions);
+            flowchartInstanceCache.push(diagram);
+        } catch (e) {
+            console.log(e);
+        }
+
+        //}, 50 * (index + 1));
     });
 }
 
@@ -73,30 +74,32 @@ function renderMermaidGraphs(scope) {
      * scope is the node to render in
      */
     scope = scope || document.body;
-    var count = 0;
+
+    //var count = 0;
     each(domQuery.all('.mermaid', scope), function (graph, index) {
-        count++;
-        setTimeout(function () { // for optimizing markdown rendering
-            try {
-                mermaid.init(null, graph);
-            } catch (e) {
-                console.log(e);
-            }
-        }, 50 * (index + 1));
+        //count++;
+        //setTimeout(function () { // for optimizing markdown rendering
+        try {
+            mermaid.init(null, graph);
+        } catch (e) {
+            console.log(e);
+        }
+
+        //}, 50 * (index + 1));
     });
 
-    setTimeout(function () {
-        // fix GANTT diagrams (width of lanes is not set correctly) {
-        var ganttGraphs = domQuery.all('.mermaid[data-type=gantt] svg', scope);
-        each(ganttGraphs, function (svg) {
-            var lanes = domQuery.all('g rect.section');
-            each(lanes, function (lane) {
-                domAttr.set(lane, 'width', domStyle.get(svg, 'width'));
-            });
+    //setTimeout(function () {
+    // fix GANTT diagrams (width of lanes is not set correctly) {
+    var ganttGraphs = domQuery.all('.mermaid[data-type=gantt] svg', scope);
+    each(ganttGraphs, function (svg) {
+        var lanes = domQuery.all('g rect.section');
+        each(lanes, function (lane) {
+            domAttr.set(lane, 'width', domStyle.get(svg, 'width'));
         });
+    });
 
-        // }
-    }, 50 * (count + 2));
+    // }
+    //}, 50 * (count + 2));
 }
 
 function loadJsFiles(files, index) {
