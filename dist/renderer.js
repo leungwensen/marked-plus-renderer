@@ -12542,18 +12542,18 @@
 	
 	    flowchartInstanceCache = [];
 	    each(_query2.default.all('.flowchart', scope), function (container, index) {
-	        setTimeout(function () {
-	            // for optimizing markdown rendering
-	            try {
-	                var codeElement = _query2.default.one('.flowchart-code', container);
-	                var graphElement = _query2.default.one('.flowchart-graph', container);
-	                var diagram = flowchart.parse(codeElement.innerHTML);
-	                diagram.drawSVG(graphElement, flowchartOptions);
-	                flowchartInstanceCache.push(diagram);
-	            } catch (e) {
-	                console.log(e);
-	            }
-	        }, 50 * (index + 1));
+	        //setTimeout(function () { // for optimizing markdown rendering
+	        try {
+	            var codeElement = _query2.default.one('.flowchart-code', container);
+	            var graphElement = _query2.default.one('.flowchart-graph', container);
+	            var diagram = flowchart.parse(codeElement.innerHTML);
+	            diagram.drawSVG(graphElement, flowchartOptions);
+	            flowchartInstanceCache.push(diagram);
+	        } catch (e) {
+	            console.log(e);
+	        }
+	
+	        //}, 50 * (index + 1));
 	    });
 	}
 	
@@ -12567,31 +12567,32 @@
 	     * scope is the node to render in
 	     */
 	    scope = scope || document.body;
-	    var count = 0;
+	
+	    //var count = 0;
 	    each(_query2.default.all('.mermaid', scope), function (graph, index) {
-	        count++;
-	        setTimeout(function () {
-	            // for optimizing markdown rendering
-	            try {
-	                mermaid.init(null, graph);
-	            } catch (e) {
-	                console.log(e);
-	            }
-	        }, 50 * (index + 1));
+	        //count++;
+	        //setTimeout(function () { // for optimizing markdown rendering
+	        try {
+	            mermaid.init(null, graph);
+	        } catch (e) {
+	            console.log(e);
+	        }
+	
+	        //}, 50 * (index + 1));
 	    });
 	
-	    setTimeout(function () {
-	        // fix GANTT diagrams (width of lanes is not set correctly) {
-	        var ganttGraphs = _query2.default.all('.mermaid[data-type=gantt] svg', scope);
-	        each(ganttGraphs, function (svg) {
-	            var lanes = _query2.default.all('g rect.section');
-	            each(lanes, function (lane) {
-	                _attr2.default.set(lane, 'width', _style2.default.get(svg, 'width'));
-	            });
+	    //setTimeout(function () {
+	    // fix GANTT diagrams (width of lanes is not set correctly) {
+	    var ganttGraphs = _query2.default.all('.mermaid[data-type=gantt] svg', scope);
+	    each(ganttGraphs, function (svg) {
+	        var lanes = _query2.default.all('g rect.section');
+	        each(lanes, function (lane) {
+	            _attr2.default.set(lane, 'width', _style2.default.get(svg, 'width'));
 	        });
+	    });
 	
-	        // }
-	    }, 50 * (count + 2));
+	    // }
+	    //}, 50 * (count + 2));
 	}
 	
 	function loadJsFiles(files, index) {
