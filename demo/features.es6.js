@@ -7,7 +7,7 @@ import win from 'zero-lang/global';
 
 let mpr = win.mpr;
 
-fetch('../doc/features.md')
+fetch('../doc/features.md?raw')
     .then(function (res) {
         return res.text();
     })

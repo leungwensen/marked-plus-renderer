@@ -4,7 +4,7 @@
 import fetch from 'zero-net/fetch';
 import domQuery from 'zero-dom/query';
 
-fetch('./README.md')
+fetch('./README.md?raw')
     .then(function (res) {
         return res.text();
     })

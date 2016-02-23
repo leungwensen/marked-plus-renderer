@@ -3,7 +3,7 @@
     "title": "marked-plus-renderer",
     "description": "marked with a few more features",
     "homepage": "https://github.com/leungwensen/marked-plus-renderer",
-    "version": "0.0.20160222",
+    "version": "0.0.20160223",
     "main": "src/index.js",
     "license": "MIT",
     "author": {

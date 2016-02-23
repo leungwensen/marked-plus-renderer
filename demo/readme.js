@@ -61,7 +61,7 @@
 	 */
 	
 	
-	(0, _fetch2.default)('./README.md').then(function (res) {
+	(0, _fetch2.default)('./README.md?raw').then(function (res) {
 	    return res.text();
 	}).then(function (markdownString) {
 	    mpr.render(_query2.default.one('#container'), markdownString);
