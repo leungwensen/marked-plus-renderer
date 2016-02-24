@@ -12514,6 +12514,8 @@
 	var flowchartOptions = {
 	    x: 0,
 	    y: 0,
+	    fill: 'white',
+	    scale: 1,
 	    'line-width': 2,
 	    'line-length': 40,
 	    'text-margin': 10,
@@ -12521,11 +12523,18 @@
 	    'font-color': 'black',
 	    'line-color': 'grey',
 	    'element-color': 'grey',
-	    fill: 'lightyellow',
 	    'yes-text': 'yes',
 	    'no-text': 'no',
 	    'arrow-end': 'block',
-	    scale: 1
+	    flowstate: {
+	        past: { fill: '#CCCCCC', 'font-size': 12 },
+	        current: { fill: 'yellow', 'font-color': 'red', 'font-weight': 'bold' },
+	        future: { fill: '#FFFF99' },
+	        request: { fill: 'blue' },
+	        invalid: { fill: '#444444', 'font-color': 'white' },
+	        approved: { fill: '#58C4A3', 'font-size': 12, 'yes-text': 'APPROVED', 'no-text': 'n/a' },
+	        rejected: { fill: '#C45879', 'font-size': 12, 'yes-text': 'n/a', 'no-text': 'REJECTED' }
+	    }
 	};
 	var flowchartInstanceCache = [];
 	function renderFlowcharts(scope) {
