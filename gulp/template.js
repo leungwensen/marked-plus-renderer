@@ -8,8 +8,8 @@ var path = require('path');
 
 gulp.task('template', function () {
     return gulp.src([
-            path.resolve(__dirname, '../src/template/*.html')
+            path.resolve(__dirname, '../src/**/*.html')
         ])
         .pipe(compileTemplate())
-        .pipe(gulp.dest(path.resolve(__dirname, '../src/template/')));
+        .pipe(gulp.dest(path.resolve(__dirname, '../src/')));
 });
