@@ -3,6 +3,7 @@ import domAttr from 'zero-dom/attr';
 import domQuery from 'zero-dom/query';
 import domStyle from 'zero-dom/style';
 import hljs from 'highlight.js';
+import graphlibDot from 'graphlib-dot';
 
 const each = lang.each;
 const destroy = lang.destroy;
@@ -34,13 +35,13 @@ let flowchartOptions = {
     'no-text': 'no',
     'arrow-end': 'block',
     flowstate: {
-        past: { fill: '#CCCCCC', 'font-size': 12 },
-        current: { fill: 'yellow', 'font-color': 'red', 'font-weight': 'bold' },
-        future: { fill: '#FFFF99' },
-        request: { fill: 'blue' },
-        invalid: { fill: '#444444', 'font-color': 'white' },
-        approved: { fill: '#58C4A3', 'font-size': 12, 'yes-text': 'APPROVED', 'no-text': 'n/a' },
-        rejected: { fill: '#C45879', 'font-size': 12, 'yes-text': 'n/a', 'no-text': 'REJECTED' },
+        past: {fill: '#CCCCCC', 'font-size': 12},
+        current: {fill: 'yellow', 'font-color': 'red', 'font-weight': 'bold'},
+        future: {fill: '#FFFF99'},
+        request: {fill: 'blue'},
+        invalid: {fill: '#444444', 'font-color': 'white'},
+        approved: {fill: '#58C4A3', 'font-size': 12, 'yes-text': 'APPROVED', 'no-text': 'n/a'},
+        rejected: {fill: '#C45879', 'font-size': 12, 'yes-text': 'n/a', 'no-text': 'REJECTED'},
     },
 };
 let flowchartInstanceCache = [];
@@ -93,7 +94,6 @@ function renderMermaidGraphs(scope) {
         } catch (e) {
             console.log(e);
         }
-
         //}, 50 * (index + 1));
     });
 
@@ -109,6 +109,12 @@ function renderMermaidGraphs(scope) {
 
     // }
     //}, 50 * (count + 2));
+}
+
+function renderGraphDot(scope) {
+    scope = scope || document.body;
+    each(domQuery.all('.graph-dot', scope), function (graph, index) {
+    });
 }
 
 function loadJsFiles(files, index) {
@@ -173,6 +179,7 @@ export default function (compiler, newRenderOptions = {}) {
         });
 
         renderMermaidGraphs(container); // render mermaid graphs
+        renderGraphDot(container);
         renderFlowcharts(container);    // render flowcharts
 
         loadCssCode(compiler.__cssCodeToLoad);

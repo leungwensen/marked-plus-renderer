@@ -13,6 +13,7 @@ import tmplJavascript from './template/javascript';
 import tmplMath from './template/math';
 import tmplMermaidGraph from './template/mermaid';
 import tmplTaskListItem from './template/task-list-item';
+import tmplGraphDot from './template/graph-dot';
 
 let templateHelper = lang.extend({}, lang, htmlUtils);
 
@@ -64,7 +65,7 @@ export default function (newOptions) {
 
     renderer.code = function (code, language, escaped, lineNumber) { // code block
         code = lang.trim(code);
-        language = language || '';
+        language = lang.trim(language) || '';
 
         if (language === 'markdown' || language === 'md') {
             return RendererPrototype.code.apply(this, arguments);
@@ -164,6 +165,13 @@ export default function (newOptions) {
             return tmplMermaidGraph({
                 code,
                 type: language,
+            }, templateHelper);
+        }
+
+        // DOT graph
+        if (language.match(/^graph-dot$/i)) {
+            return tmplGraphDot({
+                code,
             }, templateHelper);
         }
 
